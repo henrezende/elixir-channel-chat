@@ -54,7 +54,8 @@ defmodule ChannelChat.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:excoveralls, "~> 0.16.1", only: [:test, :dev]}
+      {:excoveralls, "~> 0.16.1", only: [:test, :dev]},
+      {:auth_plug, "~> 1.5"}
     ]
   end
 
