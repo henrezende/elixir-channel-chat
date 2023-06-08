@@ -24,4 +24,16 @@ defmodule ChannelChatWeb.RoomChannelTest do
     broadcast_from!(socket, "broadcast", %{"some" => "data"})
     assert_push "broadcast", %{"some" => "data"}
   end
+
+  test ":after_join sends all existing messages", %{socket: socket} do
+    # insert a new message to send in the :after_join
+    payload = %{name: "Alex", message: "test"}
+    ChannelChat.Message.changeset(%ChannelChat.Message{}, payload) |> ChannelChat.Repo.insert()
+
+    {:ok, _, socket2} = ChannelChatWeb.UserSocket
+      |> socket("person_id", %{some: :assign})
+      |> subscribe_and_join(ChannelChatWeb.RoomChannel, "room:lobby")
+
+    assert socket2.join_ref != socket.join_ref
+  end
 end
