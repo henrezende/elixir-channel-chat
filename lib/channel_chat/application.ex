@@ -14,6 +14,7 @@ defmodule ChannelChat.Application do
       ChannelChat.Repo,
       # Start the PubSub system
       {Phoenix.PubSub, name: ChannelChat.PubSub},
+      ChannelChatWeb.Presence,
       # Start the Endpoint (http/https)
       ChannelChatWeb.Endpoint
       # Start a worker by calling: ChannelChat.Worker.start_link(arg)
