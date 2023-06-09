@@ -24,22 +24,23 @@ defmodule ChannelChatWeb.RoomChannel do
   @impl true
   def handle_in("shout", payload, socket) do
     # Insert message in database
-    {:ok, msg} = ChannelChat.Message.changeset(%ChannelChat.Message{}, payload) |> ChannelChat.Repo.insert()
+    {:ok, msg} =
+      ChannelChat.Message.changeset(%ChannelChat.Message{}, payload) |> ChannelChat.Repo.insert()
 
     # Assigning name to socket assigns and tracking presence
     socket
-      |> assign(:person_name, msg.name)
-      |> track_presence()
-      |> broadcast("shout", Map.put_new(payload, :id, msg.id))
+    |> assign(:person_name, msg.name)
+    |> track_presence()
+    |> broadcast("shout", Map.put_new(payload, :id, msg.id))
 
     {:noreply, socket}
   end
 
-
   @impl true
   def handle_info(:after_join, socket) do
     ChannelChat.Message.get_messages()
-    |> Enum.reverse() # revers to display the latest message at the bottom of the page
+    # revers to display the latest message at the bottom of the page
+    |> Enum.reverse()
     |> Enum.each(fn msg ->
       push(socket, "shout", %{
         name: msg.name,
@@ -50,7 +51,8 @@ defmodule ChannelChatWeb.RoomChannel do
 
     push(socket, "presence_state", Presence.list("room:lobby"))
 
-    {:noreply, socket} # :noreply
+    # :noreply
+    {:noreply, socket}
   end
 
   defp track_presence(%{assigns: %{person_name: person_name}} = socket) do
@@ -60,6 +62,7 @@ defmodule ChannelChatWeb.RoomChannel do
 
     socket
   end
+
   # Add authorization logic here as required.
   defp authorized?(_payload) do
     true

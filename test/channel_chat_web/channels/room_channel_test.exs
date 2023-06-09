@@ -30,7 +30,8 @@ defmodule ChannelChatWeb.RoomChannelTest do
     payload = %{name: "Alex", message: "test"}
     ChannelChat.Message.changeset(%ChannelChat.Message{}, payload) |> ChannelChat.Repo.insert()
 
-    {:ok, _, socket2} = ChannelChatWeb.UserSocket
+    {:ok, _, socket2} =
+      ChannelChatWeb.UserSocket
       |> socket("person_id", %{some: :assign})
       |> subscribe_and_join(ChannelChatWeb.RoomChannel, "room:lobby")
 
